@@ -1,0 +1,12 @@
+1) Ceiling probe (gradient boosting, all order-time columns incl. Product Name, test set)
+   loss ROC-AUC = 0.5052   (0.5 = no skill; logistic regression got about 0.503)
+   Benefit per order R2 = 0.0105   (OLS got 0.0200)
+
+2) Loss rate across products with >= 200 order lines
+   products = 72, loss-rate range = 0.133 to 0.240
+   sd of product loss rates = 0.0216; sd expected from pure chance = 0.0194
+
+3) One product held fixed: 'Perfect Fitness Perfect Rip Deck', quantity 1, discount rate <= 5%
+   order lines = 1,342; distinct unit prices = 1
+   loss rate = 0.189; Benefit per order 5th / 50th / 95th percentile = [-43.95, 15.55, 28.51]
+   losses = 254, profits = 1,088

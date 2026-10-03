@@ -1,0 +1,11 @@
+check,value
+GB loss ROC_AUC (test),0.5052
+GB Benefit R2 (test),0.0105
+n products (>=200 lines),72.0
+sd of product loss rates,0.0216
+chance sd of product loss rates,0.0194
+fixed-product order lines,1342.0
+fixed-product loss rate,0.1893
+fixed-product Benefit p05,-43.95
+fixed-product Benefit p50,15.55
+fixed-product Benefit p95,28.51

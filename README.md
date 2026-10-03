@@ -49,7 +49,19 @@ B_hypothesis_powerbi/
     PHASE2B_REPORT.md
     handoff_phase2b.md
     plots/
-C_ols_loss/                             # (Hisana) OLS + loss classification — to add
+C_loss_ols/
+  c_ols_loss.py                         # Phase 3a: OLS + loss classification
+  c_signal_check.py                     # Phase 3a: ceiling probe + same-product check
+  requirements.txt
+  outputs/
+    PHASE3A_REPORT.md                   # findings and viva wording
+    handoff_phase3a.md
+    ols_*.csv / ols_summary.txt         # OLS tables, coefficients, assumption tests
+    loss_*.csv / loss_logit_summary.txt # classification tables and odds ratios
+    loss_predictions.csv                # one row per cleaned row (for Power BI)
+    ols_predictions_test.csv
+    signal_check.txt
+    ols_plots/
 D_late_model_report/                    # (Preetham) late model + report/slides — to add
 README.md
 ```
@@ -62,7 +74,7 @@ README.md
 | Oscar | Phase 2a — EDA | Done |
 | Mithun | Phase 2b — hypothesis tests | Done |
 | Mithun | Phase 4 — Power BI dashboard | Pages 1–3 not started; page 4 waits on Hisana and Preetham |
-| Hisana | Phase 3a — OLS + loss classification | Cleaned file ready |
+| Hisana | Phase 3a — OLS + loss classification | Done |
 | Preetham | Phase 3b — late-delivery model | Cleaned file ready |
 
 ## Phase 1 (Oscar) — start here
@@ -106,10 +118,13 @@ python A_preprocessing_eda/phase2a_eda.py
 - Do not edit the cleaned CSV. Request changes through Oscar.
 - Do not use leakage columns: `Delivery Status`, `Days for shipping (real)`, `shipping date (DateOrders)`, `Order Profit Per Order`, `Order Item Profit Ratio`.
 - `Benefit per order` is the OLS target only — never a feature for loss or OLS.
+- `Benefit_signed_log` is a transform of `Benefit per order` (correlation ≈ 0.94 with `loss`): use it only as a response, never as a feature.
 - `late`, `loss`, and `Late_delivery_risk` are targets, not features.
 - Scale numeric features after the split, fitting on the training fold only.
 - Drop one dummy level per one-hot group before a model with an intercept.
-- Keep `Order Status` out of models until the group decides (may be post-order).
+- Keep `Order Status` out of models until the group decides. It is post-order information, and CANCELED and SUSPECTED_FRAUD orders are 100% not-late, so it leaks the late target.
+- `Days for shipment (scheduled)` is one-to-one with `Shipping Mode` (0 = Same Day, 1 = First, 2 = Second, 4 = Standard): use one, not both.
+- `Sales`, `Order Item Total` and `Order Item Discount` are algebraically tied to price, quantity and discount rate (Sales vs Order Item Total r ≈ 0.99): do not put them in the same linear model.
 
 ### Re-run Phase 1 locally
 
@@ -131,6 +146,30 @@ python B_hypothesis_powerbi/phase2b_tests.py
 ```
 
 Results: [`B_hypothesis_powerbi/outputs/PHASE2B_REPORT.md`](B_hypothesis_powerbi/outputs/PHASE2B_REPORT.md) · [`tests_results.csv`](B_hypothesis_powerbi/outputs/tests_results.csv) · [`handoff_phase2b.md`](B_hypothesis_powerbi/outputs/handoff_phase2b.md)
+
+## Phase 3a (Hisana) — OLS and loss classification
+
+```bash
+python -m pip install -r C_loss_ols/requirements.txt
+python C_loss_ols/c_ols_loss.py
+python C_loss_ols/c_signal_check.py
+```
+
+**Main finding:** order-time variables do not explain or forecast loss-making orders. This is a result about the data, not a modelling failure.
+
+| Result (test set, 36,104 orders) | Value |
+| --- | --- |
+| OLS on `Benefit per order`, R² (train / test) | 0.0165 / 0.0200 |
+| OLS test RMSE vs mean-only baseline | $102.79 vs $103.84 |
+| OLS assumptions | Fail on the raw scale (residual skew -5.63, Breusch-Pagan and Jarque-Bera p ≈ 0); HC3 robust SEs and a signed-log refit reported |
+| "Always predict profit" accuracy | 0.8128 (recall 0 — accuracy alone is misleading) |
+| Loss models (balanced, oversampling, SMOTE) | precision ≈ 0.19 (the base rate), recall ≈ 0.49–0.52, ROC-AUC ≈ 0.50 |
+| Gradient-boosting probe, all order-time columns incl. product | loss AUC 0.505, profit R² 0.011 |
+| Same product, price, quantity 1, discount ≤ 5% (1,342 lines) | 18.9% still end in loss |
+
+Interpretation (not tested, because the dataset has no cost columns): the missing information is likely backend operational cost (product, fulfilment, returns), so loss cannot be forecast from the order record alone. Do not describe any variable as a "driver" of loss, and do not quote the F1 of 0.315 (it comes from flagging every order as a loss).
+
+Full write-up: [`C_loss_ols/outputs/PHASE3A_REPORT.md`](C_loss_ols/outputs/PHASE3A_REPORT.md) · Hand-off: [`C_loss_ols/outputs/handoff_phase3a.md`](C_loss_ols/outputs/handoff_phase3a.md)
 
 ## Contributors
 
