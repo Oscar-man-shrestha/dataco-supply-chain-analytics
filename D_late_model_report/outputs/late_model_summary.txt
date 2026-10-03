@@ -1,0 +1,92 @@
+PHASE 3b — LATE DELIVERY MODEL
+======================================================================
+
+Target:
+  Late_delivery_risk (1 = late, 0 = not late)
+
+Split:
+  80/20 stratified train/test split
+  random_state = 42
+
+Features:
+  - Order Item Quantity
+  - Sales
+  - Order Item Discount Rate
+  - Shipping Mode_First Class
+  - Shipping Mode_Same Day
+  - Shipping Mode_Second Class
+  - Market_Africa
+  - Market_Europe
+  - Market_Pacific Asia
+  - Market_USCA
+  - Order Region_Canada
+  - Order Region_Caribbean
+  - Order Region_Central Africa
+  - Order Region_Central Asia
+  - Order Region_East Africa
+  - Order Region_East of USA
+  - Order Region_Eastern Asia
+  - Order Region_Eastern Europe
+  - Order Region_North Africa
+  - Order Region_Northern Europe
+  - Order Region_Oceania
+  - Order Region_South America
+  - Order Region_South Asia
+  - Order Region_South of  USA 
+  - Order Region_Southeast Asia
+  - Order Region_Southern Africa
+  - Order Region_Southern Europe
+  - Order Region_US Center 
+  - Order Region_West Africa
+  - Order Region_West Asia
+  - Order Region_West of USA 
+  - Order Region_Western Europe
+  - Customer Segment_Corporate
+  - Customer Segment_Home Office
+  - Type_CASH
+  - Type_PAYMENT
+  - Type_TRANSFER
+  - Category Name_grouped_Camping & Hiking
+  - Category Name_grouped_Cardio Equipment
+  - Category Name_grouped_Electronics
+  - Category Name_grouped_Fishing
+  - Category Name_grouped_Indoor/Outdoor Games
+  - Category Name_grouped_Men's Footwear
+  - Category Name_grouped_Other
+  - Category Name_grouped_Shop By Sport
+  - Category Name_grouped_Water Sports
+  - Category Name_grouped_Women's Apparel
+
+Features deliberately excluded:
+  - Benefit per order
+  - Benefit_signed_log
+  - Days for shipment (scheduled)
+  - Days for shipping (real)
+  - Delivery Status
+  - Order Item Profit Ratio
+  - Order Profit Per Order
+  - Order Status
+  - late
+  - loss
+  - shipping date (DateOrders)
+
+Reference levels:
+  - Shipping Mode: Standard Class
+  - Market: LATAM
+  - Order Region: Central America
+  - Customer Segment: Consumer
+  - Type: DEBIT
+  - Category Name_grouped: Cleats
+
+Test-set metrics:
+  Accuracy : 0.696765
+  Precision: 0.843745
+  Recall   : 0.548545
+  F1       : 0.664850
+  ROC-AUC  : 0.740931
+
+Confusion matrix:
+  TN = 14,297
+  FP = 2,011
+  FN = 8,937
+  TP = 10,859
