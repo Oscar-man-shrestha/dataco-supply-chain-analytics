@@ -29,6 +29,7 @@ A_preprocessing_eda/
   phase1_cleaning.ipynb                 # Phase 1 walkthrough notebook
   phase1_cleaning.py                    # reproducible Phase 1 pipeline script
   phase1_validate.py                    # independent checks (must exit 0)
+  phase2a_eda.py                        # Phase 2a EDA script
   requirements.txt
   outputs/
     cleaned_supply_chain.csv
@@ -36,6 +37,10 @@ A_preprocessing_eda/
     handoff_phase1.md                   # short group-chat hand-off
     PHASE1_REPORT.md                    # teammate-facing Phase 1 report
     outlier_plots/
+    eda_plots/                          # Phase 2a plots
+    eda_findings.md
+    eda_summary_stats.csv
+    handoff_phase2a.md
 B_hypothesis_powerbi/
   phase2b_tests.py                      # T1–T6 hypothesis tests
   dashboard_spec.md                     # Power BI page layout
@@ -54,7 +59,7 @@ README.md
 | Owner | Block | Status |
 | --- | --- | --- |
 | Oscar | Phase 1 — cleaning and preprocessing | Done |
-| Oscar | Phase 2a — EDA | Not started |
+| Oscar | Phase 2a — EDA | Done |
 | Mithun | Phase 2b — hypothesis tests | Done |
 | Mithun | Phase 4 — Power BI dashboard | Pages 1–3 not started; page 4 waits on Hisana and Preetham |
 | Hisana | Phase 3a — OLS + loss classification | Cleaned file ready |
@@ -81,6 +86,20 @@ Full write-up for teammates: [`A_preprocessing_eda/outputs/PHASE1_REPORT.md`](A_
 Detailed viva log: [`A_preprocessing_eda/outputs/cleaning_log.md`](A_preprocessing_eda/outputs/cleaning_log.md)
 
 Short hand-off: [`A_preprocessing_eda/outputs/handoff_phase1.md`](A_preprocessing_eda/outputs/handoff_phase1.md)
+
+## Phase 2a (Oscar) — EDA
+
+| Item | Path |
+| --- | --- |
+| Findings (8 plain-language points + tests for B) | [`A_preprocessing_eda/outputs/eda_findings.md`](A_preprocessing_eda/outputs/eda_findings.md) |
+| Plots | [`A_preprocessing_eda/outputs/eda_plots/`](A_preprocessing_eda/outputs/eda_plots/) |
+| Summary stats CSV | [`A_preprocessing_eda/outputs/eda_summary_stats.csv`](A_preprocessing_eda/outputs/eda_summary_stats.csv) |
+| Hand-off | [`A_preprocessing_eda/outputs/handoff_phase2a.md`](A_preprocessing_eda/outputs/handoff_phase2a.md) |
+| Script | [`A_preprocessing_eda/phase2a_eda.py`](A_preprocessing_eda/phase2a_eda.py) |
+
+```bash
+python A_preprocessing_eda/phase2a_eda.py
+```
 
 ### Rules every teammate must follow
 
